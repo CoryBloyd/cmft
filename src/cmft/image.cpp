@@ -3121,7 +3121,7 @@ namespace cmft
         return false;
     }
 
-    bool imageCubemapFromLatLong(Image& _dst, const Image& _src, bool _useBilinearInterpolation, AllocatorI* _allocator)
+    bool imageCubemapFromLatLong(Image& _dst, const Image& _src, bool _useBilinearInterpolation, AllocatorI* _allocator, bool _goHack)
     {
         if (!imageIsLatLong(_src))
         {
@@ -3165,6 +3165,14 @@ namespace cmft
                     // Get cubemap vector (x,y,z) from (u,v,faceIdx).
                     float vec[3];
                     texelCoordToVec(vec, uu, vv, face);
+
+                    if (_goHack)
+                    { // Mirror and rotate the cubemap to match the expectations of the Oculus Go's cubemap layer compositor.
+                        float x = vec[0], y = vec[1], z = vec[2];
+                        vec[0] = z;
+                        vec[1] = y;
+                        vec[2] = x;
+                    }
 
                     // Convert cubemap vector (x,y,z) to latlong (u,v).
                     float xSrcf;
@@ -3254,10 +3262,10 @@ namespace cmft
         return true;
     }
 
-    bool imageCubemapFromLatLong(Image& _image, bool _useBilinearInterpolation, AllocatorI* _allocator)
+    bool imageCubemapFromLatLong(Image& _image, bool _useBilinearInterpolation, AllocatorI* _allocator, bool _goHack)
     {
         Image tmp;
-        if (imageCubemapFromLatLong(tmp, _image, _useBilinearInterpolation, _allocator))
+        if (imageCubemapFromLatLong(tmp, _image, _useBilinearInterpolation, _allocator, _goHack))
         {
             imageMove(_image, tmp, _allocator);
             return true;

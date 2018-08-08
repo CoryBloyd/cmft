@@ -307,10 +307,10 @@ namespace cmft
     bool imageCubemapFromCross(Image& _image, AllocatorI* _allocator = g_allocator);
 
     ///
-    bool imageCubemapFromLatLong(Image& _dst, const Image& _src, bool _useBilinearInterpolation = true, AllocatorI* _allocator = g_allocator);
+    bool imageCubemapFromLatLong(Image& _dst, const Image& _src, bool _useBilinearInterpolation = true, AllocatorI* _allocator = g_allocator, bool _goHack = false);
 
     ///
-    bool imageCubemapFromLatLong(Image& _image, bool _useBilinearInterpolation = true, AllocatorI* _allocator = g_allocator);
+    bool imageCubemapFromLatLong(Image& _image, bool _useBilinearInterpolation = true, AllocatorI* _allocator = g_allocator, bool _goHack = false);
 
     ///
     bool imageLatLongFromCubemap(Image& _dst, const Image& _src, bool _useBilinearInterpolation = true, AllocatorI* _allocator = g_allocator);

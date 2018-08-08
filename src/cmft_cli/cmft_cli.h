@@ -235,6 +235,9 @@ struct InputParameters
 
     // Encode
     bool m_encodeRGBM;
+
+    // Hack in a hacky option. -Cory
+    bool m_goHack;
 };
 
 void inputParametersFromCommandLine(InputParameters& _inputParameters, const cmft::CommandLine& _cmdLine)
@@ -345,6 +348,8 @@ void inputParametersFromCommandLine(InputParameters& _inputParameters, const cmf
 
     // Encode
     _inputParameters.m_encodeRGBM = _cmdLine.hasArg("rgbm");
+
+    _inputParameters.m_goHack = _cmdLine.hasArg("goHack");
 
     // Output.
     uint32_t outputCount = 0;
@@ -545,6 +550,7 @@ void inputParametersDefault(InputParameters& _inputParameters)
     // Misc.
     _inputParameters.m_silent = false;
     _inputParameters.m_encodeRGBM = false;
+    _inputParameters.m_goHack = false;
 }
 
 /// Outputs C file.
@@ -943,7 +949,7 @@ int cmftMain(int _argc, char const* const* _argv)
         else if (imageIsLatLong(image))
         {
             INFO("Converting latlong image to cubemap.");
-            imageCubemapFromLatLong(image);
+            imageCubemapFromLatLong(image, true, g_allocator, inputParameters.m_goHack);
         }
         else if (imageIsHStrip(image))
         {
